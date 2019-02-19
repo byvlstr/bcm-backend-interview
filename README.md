@@ -110,11 +110,17 @@ Our API should return a json array containing the following schema:
 
 Beyong these *basic* features, we will be interested in finding out how you would handle the following use cases / scenarios:
  * Provider `Air Moon` frequently takes a long time to respond (but it does send back data). Depending on the way you developed the API it may have performance impacts on the whole search. How would you take care of this ? 
+ **I have implemented one part of the suggested solution to launch all requests asynchronously and wait for their all responses. Additionally, especially if this API has varying response times, I would suggest setting a timeout on the request, meaning that beyond this threashold we prefer to not let the user wait too long but have less providers than the entire possibility set.**
  * Provider `Air Jazz` has downtime issues from time to time, and returns a `HTTP 502 Bad Gateway` error. Once again, how would you handle this so it does not penalize the whole API.
+ **I would suggest to set a retry on the request. We can set a fixed number of accepted retries. Passed this, this provider will not be part of the result set to avoid too long loading times.**
  * The API we just created is to be used by our partners. How would you handle security ? We need to make sure only authenticated users (and authorized) can access this API.
+ **I would setup a set of roles in the back-end which enable access or not to the API. For authentication, we could either create our own little login system with a JWT token containing the role set amongst other things, or use a third party system like Okta, although I do not know if/how we could handle the previously mentioned authorization.**
  * We would want to rate limit our API, so each of our client has a limited number of allowed calls. How would you handle this ?
+ **We could have a table in the database which counts (down) the number of calls to the API. On each API call, if we use the previously mentioned authentication/authorisation we can handle the update of the count. Otherwise, an API key request before using the API, very common pattern on open APIs, could be used.**
  * Imagine we now have a lot of incoming traffic on our API, and there is some overlap on the search requests. How could we improve the program ?
+ **If I understand the question ("overlap") correctly, I would add two things: first, a cache which gets invalidated after few minutes (depending on how much prices change) for each search (airports and day); second, some load balancing and a duplication of our back-end to handle the inflow.**
  * Anything that you think could be relevant....
+ 
 
  
 
