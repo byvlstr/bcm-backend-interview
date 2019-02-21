@@ -120,7 +120,7 @@ Beyong these *basic* features, we will be interested in finding out how you woul
  * Imagine we now have a lot of incoming traffic on our API, and there is some overlap on the search requests. How could we improve the program ?
  **If I understand the question ("overlap") correctly, I would add two things: first, a cache which gets invalidated after few minutes (depending on how much prices change) for each search (airports and day); second, some load balancing and a duplication of our back-end to handle the inflow.**
  * Anything that you think could be relevant....
- 
+  **There are of course few things missing. I didn't implement the CSV mapping but the request and provider will be similar to the other ones. Also, some unit tests are missing, especially on the providers to check API correctness and data providing. Among other things, I can also think of currently unhandled HTTP request errors that would need to be handled in order to report failures correctly in a logging system.**
 
  
 
